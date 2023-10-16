@@ -17,7 +17,7 @@ class DetailBooks extends StatelessWidget {
         child: Column(
           children: [
             CustomAppBar(
-              Icons.arrow_back_ios_outlined,
+              Icons.arrow_back_ios,
               "Details Book",
               Icons.more_vert,
             ),
