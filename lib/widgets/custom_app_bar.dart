@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget {
   final IconData leftIcon;
-  final IconData rightIcon;
+  final IconData?
+      rightIcon; // Tandai sebagai nullable menggunakan tanda tanya (?)
   final String page;
   final Function? leftCallback;
   final Function?
-      rightCallback; // Tambahkan parameter fungsi callback untuk ikon kanan
+      rightCallback; // Tandai sebagai nullable menggunakan tanda tanya (?)
 
-  CustomAppBar(this.leftIcon, this.page, this.rightIcon,
-      {this.leftCallback, this.rightCallback});
+  CustomAppBar(this.leftIcon, this.page,
+      {this.rightIcon, this.leftCallback, this.rightCallback});
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +37,11 @@ class CustomAppBar extends StatelessWidget {
               ),
             ),
           ),
-          GestureDetector(
-            onTap: rightCallback != null ? () => rightCallback!() : null,
-            child: _buildIcon(rightIcon),
-          ),
+          if (rightIcon != null) // Tambahkan kondisi ini
+            GestureDetector(
+              onTap: rightCallback != null ? () => rightCallback!() : null,
+              child: _buildIcon(rightIcon!),
+            ),
         ],
       ),
     );

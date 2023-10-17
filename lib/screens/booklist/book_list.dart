@@ -34,12 +34,10 @@ class _BookListState extends State<BookList> {
             CustomAppBar(
               Icons.arrow_back_ios_outlined,
               "My BookList",
-              Icons.more_vert,
               leftCallback: () {
                 // Fungsi callback saat ikon kiri diklik
                 Navigator.pop(context);
               },
-              rightCallback: _onSearchPressed,
             ),
             SizedBox(
               height: 10.0,

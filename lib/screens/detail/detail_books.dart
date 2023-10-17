@@ -19,7 +19,10 @@ class DetailBooks extends StatelessWidget {
             CustomAppBar(
               Icons.arrow_back_ios,
               "Details Book",
-              Icons.more_vert,
+              leftCallback: () {
+                // Fungsi callback saat ikon kiri diklik
+                Navigator.pop(context);
+              },
             ),
             BookChoose(book: book),
             Divider(),

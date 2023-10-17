@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
             CustomAppBar(
               Icons.arrow_back_ios_outlined,
               "Home",
-              Icons.more_vert,
+              rightIcon: Icons.search,
               leftCallback: () {
                 // Fungsi callback saat ikon kiri diklik
                 Navigator.pop(context);
