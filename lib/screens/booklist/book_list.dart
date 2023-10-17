@@ -108,6 +108,7 @@ class _ItemMyBookListState extends State<ItemMyBookList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       scrollDirection: Axis.vertical, // Mengubah ke Axis.vertical
       itemCount: allBooks.length,
@@ -124,7 +125,7 @@ class _ItemMyBookListState extends State<ItemMyBookList> {
             );
           },
           child: Container(
-            height: 130,
+            height: 140,
             margin: EdgeInsets.fromLTRB(20, 5, 20, 10),
             decoration: BoxDecoration(
               color: Colors.white,
