@@ -2,6 +2,7 @@ import 'package:book_review/contants/colors.dart';
 import 'package:book_review/models/book.dart';
 import 'package:book_review/screens/detail/detail_books.dart';
 import 'package:book_review/widgets/custom_app_bar.dart';
+import 'package:book_review/widgets/custom_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -47,6 +48,7 @@ class _BookListState extends State<BookList> {
           ],
         ),
       ),
+      bottomNavigationBar: CustomBottomNavigationBar(),
     );
   }
 }
