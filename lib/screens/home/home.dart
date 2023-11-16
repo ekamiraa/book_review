@@ -25,6 +25,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    String? username = ModalRoute.of(context)?.settings.arguments as String?;
+
+    if (username == null) {
+      username = 'Eka Mira';
+    }
     return Scaffold(
       backgroundColor: kBackground,
       body: SingleChildScrollView(

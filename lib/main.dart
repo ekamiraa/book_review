@@ -1,5 +1,6 @@
 import 'package:book_review/screens/detail/detail_books.dart';
 import 'package:book_review/screens/home/home.dart';
+import 'package:book_review/screens/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -16,9 +17,11 @@ class MyApp extends StatelessWidget {
       statusBarColor: Colors.transparent,
     ));
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Book Review App",
-      home: HomePage(),
-    );
+        debugShowCheckedModeBanner: false,
+        title: "Book Review App",
+        home: LoginPage(),
+        routes: {
+          '/home': (context) => HomePage(),
+        });
   }
 }
