@@ -1,8 +1,9 @@
 import 'package:book_review/contants/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+   LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -18,15 +19,19 @@ class _LoginPageState extends State<LoginPage> {
       body: Column(
         children: [
           SizedBox(
-            height: 20,
+            height: 50,
           ),
           Image.asset("login.jpg"),
           Text(
             "Login",
             style: TextStyle(
-              fontSize: 24.0,
+              color: Color.fromARGB(255, 244, 156, 3),
+              fontSize: 40.0,
               fontWeight: FontWeight.bold,
             ),
+          ),
+          SizedBox(
+            height: 15,
           ),
           MyUsername(usernameController: _usernameController),
           MyPassword(passwordController: _passwordController),
@@ -36,18 +41,26 @@ class _LoginPageState extends State<LoginPage> {
               String username = _usernameController.text;
               Navigator.pushNamed(context, '/home', arguments: username);
             }),
+            style: OutlinedButton.styleFrom(
+              backgroundColor: Color.fromARGB(255, 225, 99, 71),
+              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+            ),
             child: Container(
+              
               child: Text(
                 "Login",
                 style: TextStyle(
                   fontSize: 24.0,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
             ),
           ),
           SizedBox(
-            height: 40.0,
+            height: 190.0,
           ),
         ],
       ),

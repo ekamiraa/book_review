@@ -4,10 +4,11 @@ import 'package:book_review/models/reviews.dart';
 import 'package:book_review/widgets/custom_app_bar.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class DetailBooks extends StatelessWidget {
   final Book book;
-  const DetailBooks({super.key, required this.book});
+  DetailBooks({super.key, required this.book});
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +96,21 @@ class BookDescription extends StatelessWidget {
 
 class BookChoose extends StatelessWidget {
   final Book book;
-  const BookChoose({super.key, required this.book});
+  double calculateRating(int rank) {
+  if (rank >= 1 && rank <= 4) {
+    return 5.0;
+  } else if (rank >= 5 && rank <= 8) {
+    return 4.0;
+  } else if (rank >= 9 && rank <= 12) {
+    return 3.0;
+  } else if (rank >= 13 && rank <= 15) {
+    return 2.0;
+  } else {
+    // Handle other cases if needed
+    return 0.0; // Default value
+  }
+}
+  const BookChoose({Key? key, required this.book}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -108,19 +123,38 @@ class BookChoose extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            height: 135,
-            width: 85,
+            height: 150,
+            width: 100,
             decoration: BoxDecoration(
               color: KPrimary,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(20),
               image: DecorationImage(
-                image: AssetImage(
-                  book.book_image,
-                ),
-                fit: BoxFit.fitHeight,
-              ),
-            ),
+      image: NetworkImage(book.book_image), // Use NetworkImage for loading images from URLs
+      fit: BoxFit.cover,
+    ),
+  ),
+  child: Image.network(
+    book.book_image,
+    fit: BoxFit.cover,
+    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+      if (loadingProgress == null) {
+        return child;
+      } else {
+        return Center(
+          child: CircularProgressIndicator(
+            value: loadingProgress.expectedTotalBytes != null
+                ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                : null,
           ),
+        );
+      }
+    },
+    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+      print("Error loading image: $error");
+      return Icon(Icons.error);
+    },
+  ),
+),
           Expanded(
             child: Container(
               padding: EdgeInsets.only(
@@ -132,21 +166,21 @@ class BookChoose extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   RatingBar.builder(
-                    initialRating: book.rate,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemSize: 18.0,
-                    itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                    itemBuilder: (context, _) => Icon(
-                      Icons.star,
-                      color: KPrimary,
-                    ),
-                    onRatingUpdate: (rating) {
-                      print(rating);
-                    },
-                  ),
+                          initialRating: calculateRating(book.rank),
+                          minRating: 1,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemSize: 12.0,
+                          itemPadding: EdgeInsets.symmetric(horizontal: 3.0),
+                          itemBuilder: (context, _) => Icon(
+                            Icons.star,
+                            color: KPrimary,
+                          ),
+                          onRatingUpdate: (rating) {
+                            print(rating);
+                          },
+                        ),
                   SizedBox(
                     height: 5.0,
                   ),
@@ -197,9 +231,11 @@ class BookChoose extends StatelessWidget {
   }
 }
 
+
 class ReviewBook extends StatelessWidget {
   final listReview = Reviews.reviewBestSeller();
   final Book book;
+  
   ReviewBook({super.key, required this.book});
 
   @override
@@ -253,7 +289,7 @@ class ReviewBook extends StatelessWidget {
                           ),
                         ),
                         RatingBar.builder(
-                          initialRating: book.rate,
+                          initialRating: book.rank.toDouble(),
                           minRating: 1,
                           direction: Axis.horizontal,
                           allowHalfRating: true,
