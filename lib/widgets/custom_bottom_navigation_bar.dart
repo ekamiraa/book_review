@@ -1,5 +1,6 @@
 import 'package:book_review/screens/booklist/book_list.dart';
 import 'package:book_review/screens/home/home.dart';
+import 'package:book_review/screens/profile/profile.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
@@ -18,6 +19,12 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   ];
 
   int _selectedIndex = 0;
+
+  final List<Widget> pages = [
+    HomePage(),
+    BookList(),
+    Profile(),
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -39,7 +46,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             spreadRadius: 1,
             blurRadius: 7,
             offset: Offset(0, 2),
-          )
+          ),
         ],
       ),
       child: Row(
@@ -49,12 +56,17 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             .entries
             .map(
               (entry) => GestureDetector(
-                onTap: () => _onItemTapped(entry.key),
+                onTap: () {
+                  _onItemTapped(entry.key);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => pages[entry.key]),
+                  );
+                },
                 child: Icon(
                   entry.value,
-                  color: _selectedIndex == entry.key
-                      ? Colors.black // Highlight selected icon with black color
-                      : Colors.grey, // Use grey color for other icons
+                  color:
+                      _selectedIndex == entry.key ? Colors.black : Colors.grey,
                   size: 30,
                 ),
               ),

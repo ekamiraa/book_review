@@ -97,19 +97,20 @@ class BookDescription extends StatelessWidget {
 class BookChoose extends StatelessWidget {
   final Book book;
   double calculateRating(int rank) {
-  if (rank >= 1 && rank <= 4) {
-    return 5.0;
-  } else if (rank >= 5 && rank <= 8) {
-    return 4.0;
-  } else if (rank >= 9 && rank <= 12) {
-    return 3.0;
-  } else if (rank >= 13 && rank <= 15) {
-    return 2.0;
-  } else {
-    // Handle other cases if needed
-    return 0.0; // Default value
+    if (rank >= 1 && rank <= 4) {
+      return 5.0;
+    } else if (rank >= 5 && rank <= 8) {
+      return 4.0;
+    } else if (rank >= 9 && rank <= 12) {
+      return 3.0;
+    } else if (rank >= 13 && rank <= 15) {
+      return 2.0;
+    } else {
+      // Handle other cases if needed
+      return 0.0; // Default value
+    }
   }
-}
+
   const BookChoose({Key? key, required this.book}) : super(key: key);
 
   @override
@@ -129,32 +130,36 @@ class BookChoose extends StatelessWidget {
               color: KPrimary,
               borderRadius: BorderRadius.circular(20),
               image: DecorationImage(
-      image: NetworkImage(book.book_image), // Use NetworkImage for loading images from URLs
-      fit: BoxFit.cover,
-    ),
-  ),
-  child: Image.network(
-    book.book_image,
-    fit: BoxFit.cover,
-    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-      if (loadingProgress == null) {
-        return child;
-      } else {
-        return Center(
-          child: CircularProgressIndicator(
-            value: loadingProgress.expectedTotalBytes != null
-                ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
-                : null,
+                image: NetworkImage(book
+                    .book_image), // Use NetworkImage for loading images from URLs
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Image.network(
+              book.book_image,
+              fit: BoxFit.cover,
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              (loadingProgress.expectedTotalBytes ?? 1)
+                          : null,
+                    ),
+                  );
+                }
+              },
+              errorBuilder:
+                  (BuildContext context, Object error, StackTrace? stackTrace) {
+                print("Error loading image: $error");
+                return Icon(Icons.error);
+              },
+            ),
           ),
-        );
-      }
-    },
-    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-      print("Error loading image: $error");
-      return Icon(Icons.error);
-    },
-  ),
-),
           Expanded(
             child: Container(
               padding: EdgeInsets.only(
@@ -166,21 +171,21 @@ class BookChoose extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   RatingBar.builder(
-                          initialRating: calculateRating(book.rank),
-                          minRating: 1,
-                          direction: Axis.horizontal,
-                          allowHalfRating: true,
-                          itemCount: 5,
-                          itemSize: 12.0,
-                          itemPadding: EdgeInsets.symmetric(horizontal: 3.0),
-                          itemBuilder: (context, _) => Icon(
-                            Icons.star,
-                            color: KPrimary,
-                          ),
-                          onRatingUpdate: (rating) {
-                            print(rating);
-                          },
-                        ),
+                    initialRating: calculateRating(book.rank),
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemSize: 12.0,
+                    itemPadding: EdgeInsets.symmetric(horizontal: 3.0),
+                    itemBuilder: (context, _) => Icon(
+                      Icons.star,
+                      color: KPrimary,
+                    ),
+                    onRatingUpdate: (rating) {
+                      print(rating);
+                    },
+                  ),
                   SizedBox(
                     height: 5.0,
                   ),
@@ -231,11 +236,10 @@ class BookChoose extends StatelessWidget {
   }
 }
 
-
 class ReviewBook extends StatelessWidget {
   final listReview = Reviews.reviewBestSeller();
   final Book book;
-  
+
   ReviewBook({super.key, required this.book});
 
   @override
