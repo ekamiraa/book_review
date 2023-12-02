@@ -10,7 +10,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 
 class BookList extends StatefulWidget {
-   BookList({super.key});
+  BookList({super.key});
 
   @override
   State<BookList> createState() => _BookListState();
@@ -117,7 +117,8 @@ class _ItemMyBookListState extends State<ItemMyBookList> {
     futureNonFictionBooks = httpService.fetchBook(708);
 
     // Initialize the books list when both futures are completed
-    Future.wait([futureFictionBooks, futureNonFictionBooks]).then((List<List<Book>> results) {
+    Future.wait([futureFictionBooks, futureNonFictionBooks])
+        .then((List<List<Book>> results) {
       setState(() {
         // Combine the lists and shuffle them
         books = results.expand((list) => list).toList()..shuffle();
@@ -125,6 +126,7 @@ class _ItemMyBookListState extends State<ItemMyBookList> {
       });
     });
   }
+
   // Future<void> fetchBooks() async {
   //   try {
   //     List<Book> books = await httpService.fetchBook();
@@ -138,6 +140,21 @@ class _ItemMyBookListState extends State<ItemMyBookList> {
   // }
   @override
   Widget build(BuildContext context) {
+    double calculateRating(int rank) {
+      if (rank >= 1 && rank <= 4) {
+        return 5.0;
+      } else if (rank >= 5 && rank <= 8) {
+        return 4.0;
+      } else if (rank >= 9 && rank <= 12) {
+        return 3.0;
+      } else if (rank >= 13 && rank <= 15) {
+        return 2.0;
+      } else {
+        // Handle other cases if needed
+        return 0.0; // Default value
+      }
+    }
+
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -165,38 +182,42 @@ class _ItemMyBookListState extends State<ItemMyBookList> {
             child: Row(
               children: [
                 Container(
-            height: 150,
-            width: 100,
-            decoration: BoxDecoration(
-              color: KPrimary,
-              borderRadius: BorderRadius.circular(20),
-              image: DecorationImage(
-      image: NetworkImage(book.book_image), // Use NetworkImage for loading images from URLs
-      fit: BoxFit.cover,
-    ),
-  ),
-  child: Image.network(
-    book.book_image,
-    fit: BoxFit.cover,
-    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-      if (loadingProgress == null) {
-        return child;
-      } else {
-        return Center(
-          child: CircularProgressIndicator(
-            value: loadingProgress.expectedTotalBytes != null
-                ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
-                : null,
-          ),
-        );
-      }
-    },
-    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-      print("Error loading image: $error");
-      return Icon(Icons.error);
-    },
-  ),
-),
+                  height: 150,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    color: KPrimary,
+                    borderRadius: BorderRadius.circular(20),
+                    image: DecorationImage(
+                      image: NetworkImage(book
+                          .book_image), // Use NetworkImage for loading images from URLs
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Image.network(
+                    book.book_image,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    (loadingProgress.expectedTotalBytes ?? 1)
+                                : null,
+                          ),
+                        );
+                      }
+                    },
+                    errorBuilder: (BuildContext context, Object error,
+                        StackTrace? stackTrace) {
+                      print("Error loading image: $error");
+                      return Icon(Icons.error);
+                    },
+                  ),
+                ),
                 Expanded(
                   child: Container(
                     padding: EdgeInsets.only(
@@ -208,7 +229,7 @@ class _ItemMyBookListState extends State<ItemMyBookList> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         RatingBar.builder(
-                          // initialRating: book.rate,
+                          initialRating: calculateRating(book.rank),
                           minRating: 1,
                           direction: Axis.horizontal,
                           allowHalfRating: true,
