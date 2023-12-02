@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "Book Review App",
-        home: Profile(),
+        home: HomePage(),
         routes: {
           '/home': (context) => HomePage(),
           // '/detail': (context) => DetailBooks(book: book),
