@@ -278,8 +278,8 @@ class ReviewsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       // physics: NeverScrollableScrollPhysics(),
-      // shrinkWrap: true,
-      // scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
       itemCount: reviews.length,
       itemBuilder: (context, index) => Container(
         margin: EdgeInsets.fromLTRB(15, 5, 20, 15),
