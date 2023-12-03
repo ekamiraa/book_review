@@ -1,3 +1,4 @@
+import 'package:book_review/screens/booklist/book_list.dart';
 import 'package:book_review/screens/detail/detail_books.dart';
 import 'package:book_review/screens/home/home.dart';
 import 'package:book_review/screens/login/login.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "Book Review App",
-        home: HomePage(),
+        home: BookList(),
         routes: {
           '/home': (context) => HomePage(),
           // '/detail': (context) => DetailBooks(book: book),

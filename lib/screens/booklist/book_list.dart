@@ -17,15 +17,58 @@ class BookList extends StatefulWidget {
 }
 
 class _BookListState extends State<BookList> {
-  void _onSearchPressed() {
-    // Pindah ke halaman pencarian buku saat ikon pencarian diklik
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) =>
-            BookList(), // Ganti dengan halaman pencarian buku yang sesuai
-      ),
-    );
+  List<Book> books = [];
+  late HttpService httpService;
+  bool isLoading = true;
+  late Future<List<Book>> futureNonFictionBooks;
+  late Future<List<Book>> futureFictionBooks;
+  late TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    httpService = HttpService();
+    futureFictionBooks = httpService.fetchBook(704);
+    futureNonFictionBooks = httpService.fetchBook(708);
+
+    // Initialize the books list when both futures are completed
+    Future.wait([futureFictionBooks, futureNonFictionBooks])
+        .then((List<List<Book>> results) {
+      setState(() {
+        // Combine the lists and shuffle them
+        books = results.expand((list) => list).toList()..shuffle();
+        isLoading = false;
+      });
+    });
+  }
+
+  void _runFilter(String enteredKeyword) {
+    if (enteredKeyword.isEmpty) {
+      // If the search field is empty, reset to the original list
+      Future.wait([futureFictionBooks, futureNonFictionBooks])
+          .then((List<List<Book>> results) {
+        setState(() {
+          // Combine the lists and shuffle them
+          books = results.expand((list) => list).toList()..shuffle();
+          isLoading = false;
+        });
+      });
+    } else {
+      List<Book> results = books
+          .where((book) =>
+              book.title.toLowerCase().contains(enteredKeyword.toLowerCase()) ||
+              book.author
+                  .toLowerCase()
+                  .contains(enteredKeyword.toLowerCase()) ||
+              book.publisher
+                  .toLowerCase()
+                  .contains(enteredKeyword.toLowerCase()))
+          .toList();
+
+      setState(() {
+        books = results;
+      });
+    }
   }
 
   @override
@@ -46,8 +89,9 @@ class _BookListState extends State<BookList> {
             SizedBox(
               height: 10.0,
             ),
-            SearchInput(),
-            ItemMyBookList(),
+            SearchInput(
+                searchController: searchController, onSearch: _runFilter),
+            ItemBookList(books: books),
           ],
         ),
       ),
@@ -57,6 +101,10 @@ class _BookListState extends State<BookList> {
 }
 
 class SearchInput extends StatelessWidget {
+  final TextEditingController searchController;
+  final Function(String) onSearch;
+
+  SearchInput({required this.searchController, required this.onSearch});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -72,6 +120,8 @@ class SearchInput extends StatelessWidget {
               borderRadius: BorderRadius.circular(40),
             ),
             child: TextField(
+              controller: searchController,
+              onChanged: onSearch,
               cursorColor: kFontLight,
               decoration: InputDecoration(
                   fillColor: Colors.white.withOpacity(0.1),
@@ -95,49 +145,10 @@ class SearchInput extends StatelessWidget {
   }
 }
 
-class ItemMyBookList extends StatefulWidget {
-  const ItemMyBookList({super.key});
+class ItemBookList extends StatelessWidget {
+  final List<Book> books;
+  const ItemBookList({super.key, required this.books});
 
-  @override
-  State<ItemMyBookList> createState() => _ItemMyBookListState();
-}
-
-class _ItemMyBookListState extends State<ItemMyBookList> {
-  List<Book> books = [];
-  late HttpService httpService;
-  bool isLoading = true;
-  late Future<List<Book>> futureNonFictionBooks;
-  late Future<List<Book>> futureFictionBooks;
-
-  @override
-  void initState() {
-    super.initState();
-    httpService = HttpService();
-    futureFictionBooks = httpService.fetchBook(704);
-    futureNonFictionBooks = httpService.fetchBook(708);
-
-    // Initialize the books list when both futures are completed
-    Future.wait([futureFictionBooks, futureNonFictionBooks])
-        .then((List<List<Book>> results) {
-      setState(() {
-        // Combine the lists and shuffle them
-        books = results.expand((list) => list).toList()..shuffle();
-        isLoading = false;
-      });
-    });
-  }
-
-  // Future<void> fetchBooks() async {
-  //   try {
-  //     List<Book> books = await httpService.fetchBook();
-  //     setState(() {
-  //       allBooks = books; // Update the list with fetched books
-  //     });
-  //   } catch (error) {
-  //     print("Error fetching books: $error");
-  //     // Handle the error case
-  //   }
-  // }
   @override
   Widget build(BuildContext context) {
     double calculateRating(int rank) {
