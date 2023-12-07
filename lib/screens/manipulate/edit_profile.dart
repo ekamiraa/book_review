@@ -1,3 +1,4 @@
+import 'package:book_review/contants/colors.dart';
 import 'package:book_review/widgets/custom_app_bar.dart';
 import 'package:book_review/widgets/custom_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -74,41 +75,180 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Edit Profile"),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _originalEmailController,
-              decoration: InputDecoration(labelText: "Original Email"),
+      backgroundColor: kBackground,
+      body: SingleChildScrollView(
+        child: Column(children: [
+          CustomAppBar(
+            Icons.arrow_back_ios_outlined,
+            "Edit Profile",
+            leftCallback: () {
+              // Fungsi callback saat ikon kiri diklik
+              Navigator.pop(context);
+            },
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
+                  child: TextField(
+                    controller: _originalEmailController,
+                    cursorColor: kFontLight,
+                    decoration: InputDecoration(
+                      labelText: "Original Email",
+                      prefixIcon: Icon(
+                        Icons.email,
+                        color: Color.fromARGB(255, 244, 156, 3),
+                      ),
+                      hintText: "Enter original email",
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 244, 156, 3),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.grey[400]!,
+                          width: 1.0,
+                        ),
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
+                  child: TextField(
+                    controller: _newEmailController,
+                    cursorColor: kFontLight,
+                    decoration: InputDecoration(
+                      labelText: "New Email",
+                      prefixIcon: Icon(
+                        Icons.mark_email_unread_outlined,
+                        color: Color.fromARGB(255, 244, 156, 3),
+                      ),
+                      hintText: "Enter new email address",
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 244, 156, 3),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.grey[400]!,
+                          width: 1.0,
+                        ),
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
+                  child: TextField(
+                    controller: _originalPasswordController,
+                    cursorColor: kFontLight,
+                    decoration: InputDecoration(
+                      labelText: "Original Password",
+                      prefixIcon: Icon(
+                        Icons.key,
+                        color: Color.fromARGB(255, 244, 156, 3),
+                      ),
+                      hintText: "Enter original password",
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 244, 156, 3),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.grey[400]!,
+                          width: 1.0,
+                        ),
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                    obscureText: true,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
+                  child: TextField(
+                    controller: _newPasswordController,
+                    cursorColor: kFontLight,
+                    decoration: InputDecoration(
+                      labelText: "New Password",
+                      prefixIcon: Icon(
+                        Icons.key_off_outlined,
+                        color: Color.fromARGB(255, 244, 156, 3),
+                      ),
+                      hintText: "Email Address",
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 244, 156, 3),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.grey[400]!,
+                          width: 1.0,
+                        ),
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                    obscureText: true,
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                SizedBox(
+                  height: 55,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary:
+                          Color.fromARGB(255, 244, 156, 3), // background color
+                      onPrimary: Colors.white, // text color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      elevation: 3, // button shadow
+                      textStyle: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    ),
+                    onPressed: () {
+                      _updateProfile();
+                    },
+                    child: const Text(
+                      "Edit Profile",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            TextField(
-              controller: _newEmailController,
-              decoration: InputDecoration(labelText: "New Email"),
-            ),
-            TextField(
-              controller: _originalPasswordController,
-              decoration: InputDecoration(labelText: "Password"),
-              obscureText: true,
-            ),
-            TextField(
-              controller: _newPasswordController,
-              decoration: InputDecoration(labelText: "Password"),
-              obscureText: true,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Update the profile when the button is pressed
-                _updateProfile();
-              },
-              child: Text("Update Profile"),
-            ),
-          ],
-        ),
+          ),
+        ]),
       ),
     );
   }
