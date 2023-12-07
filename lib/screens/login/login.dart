@@ -1,4 +1,8 @@
 import 'package:book_review/contants/colors.dart';
+import 'package:book_review/screens/login/firebase_auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'register.dart';
+import 'package:book_review/screens/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,152 +14,189 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _usernameController = TextEditingController();
+  final FirebaseAuthService _authService = FirebaseAuthService();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void login() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    User? user =
+        await _authService.loginWithEmailAndPassword(email, password, context);
+
+    if (user != null) {
+      // User is successfully created
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Login success"),
+          backgroundColor: Colors.green,
+        ),
+      );
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/bottomnavbar', (route) => false);
+    } else {
+      // Cannot create user
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Login failed"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          SizedBox(
-            height: 50,
-          ),
-          Image.asset("login.jpg"),
-          Text(
-            "Login",
-            style: TextStyle(
-              color: Color.fromARGB(255, 244, 156, 3),
-              fontSize: 40.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          MyUsername(usernameController: _usernameController),
-          MyPassword(passwordController: _passwordController),
-          Spacer(),
-          OutlinedButton(
-            onPressed: (() {
-              String username = _usernameController.text;
-              Navigator.pushNamedAndRemoveUntil(
-                  context, '/bottomnavbar', (route) => false,
-                  arguments: username);
-            }),
-            style: OutlinedButton.styleFrom(
-              backgroundColor: Color.fromARGB(255, 225, 99, 71),
-              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Gambar
+            Container(
+              height: 180, // Sesuaikan tinggi gambar sesuai kebutuhan
+              width: 180,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('login.jpg'),
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.circular(
+                    90.0), // Setengah dari tinggi/lebar untuk membuat gambar lingkaran
               ),
             ),
-            child: Container(
-              child: Text(
-                "Login",
-                style: TextStyle(
-                  fontSize: 24.0,
-                  color: Colors.white,
+            const SizedBox(
+                height: 10.0), // Jarak antara gambar dan teks "Login"
+            // Teks "Login"
+            const Text(
+              "Login",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w700,
+                color: Color.fromARGB(255, 244, 156, 3),
+              ),
+            ),
+            const SizedBox(
+                height: 10.0), // Jarak antara teks "Login" dan TextField
+            // TextField Email
+            TextField(
+              controller: _emailController,
+              cursorColor: kFontLight,
+              decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.email,
+                  color: Color.fromARGB(255, 244, 156, 3),
+                ),
+                hintText: "Email Address",
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color.fromARGB(255, 244, 156, 3),
+                    width: 2.0,
+                  ),
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.grey[400]!,
+                    width: 1.0,
+                  ),
+                  borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 190.0,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class MyUsername extends StatelessWidget {
-  const MyUsername({
-    super.key,
-    required TextEditingController usernameController,
-  }) : _usernameController = usernameController;
-
-  final TextEditingController _usernameController;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Stack(
-        children: [
-          Container(
-            margin: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: kFontLight.withOpacity(0.3),
-                width: 1.0,
-              ),
-              borderRadius: BorderRadius.circular(40),
+            const SizedBox(
+              height: 20.0,
             ),
-            child: TextField(
-              controller: _usernameController,
-              cursorColor: kFontLight,
-              decoration: InputDecoration(
-                  fillColor: Colors.white.withOpacity(0.1),
-                  filled: true,
-                  contentPadding: EdgeInsets.all(15),
-                  border: InputBorder.none,
-                  hintText: "Enter your username",
-                  hintStyle: TextStyle(color: kFontLight, fontSize: 15.0)),
-            ),
-          ),
-          Positioned(
-            right: 40,
-            top: 35,
-            child: Container(
-              child: Icon(Icons.person, color: kFontLight),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class MyPassword extends StatelessWidget {
-  const MyPassword({
-    super.key,
-    required TextEditingController passwordController,
-  }) : _passwordController = passwordController;
-
-  final TextEditingController _passwordController;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Stack(
-        children: [
-          Container(
-            margin: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: kFontLight.withOpacity(0.3),
-                width: 1.0,
-              ),
-              borderRadius: BorderRadius.circular(40),
-            ),
-            child: TextField(
+            // TextField Password
+            TextField(
               controller: _passwordController,
-              cursorColor: kFontLight,
               decoration: InputDecoration(
-                  fillColor: Colors.white.withOpacity(0.1),
-                  filled: true,
-                  contentPadding: EdgeInsets.all(15),
-                  border: InputBorder.none,
-                  hintText: "Enter your password",
-                  hintStyle: TextStyle(color: kFontLight, fontSize: 15.0)),
+                prefixIcon: Icon(
+                  Icons.key,
+                  color: Color.fromARGB(255, 244, 156, 3),
+                ),
+                hintText: "Password",
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color.fromARGB(255, 244, 156, 3),
+                    width: 2.0,
+                  ),
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.grey[400]!,
+                    width: 1.0,
+                  ),
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+              ),
+              obscureText: true,
             ),
-          ),
-          Positioned(
-            right: 40,
-            top: 35,
-            child: Container(
-              child: Icon(Icons.key, color: kFontLight),
+            const SizedBox(
+              height: 20.0,
             ),
-          ),
-        ],
+            SizedBox(
+              height: 55,
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Color.fromARGB(255, 244, 156, 3), // background color
+                  onPrimary: Colors.white, // text color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  elevation: 3, // button shadow
+                  textStyle: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                ),
+                onPressed: () {
+                  login();
+                },
+                child: const Text(
+                  "Login",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 12.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Don't have an account?"),
+                const SizedBox(
+                  width: 4.0,
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const RegisterPage()));
+                  },
+                  child: const Text(
+                    "Register.",
+                    style: TextStyle(color: Color.fromARGB(255, 244, 156, 3)),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
