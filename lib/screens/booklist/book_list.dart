@@ -95,7 +95,6 @@ class _BookListState extends State<BookList> {
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(),
     );
   }
 }
@@ -260,6 +259,8 @@ class ItemBookList extends StatelessWidget {
                         ),
                         Text(
                           book.title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.bold,
@@ -267,6 +268,8 @@ class ItemBookList extends StatelessWidget {
                         ),
                         Text(
                           book.author,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 14.0,
                             color: KPrimary,
