@@ -40,6 +40,10 @@ dependencies:
   rating: ^1.0.0-dev.1
   animated_bottom_navigation_bar: ^1.3.0
   font_awesome_flutter: ^10.6.0
+  firebase_core: ^2.24.0
+  firebase_auth: ^4.15.0
+  firebase_storage: ^11.5.3
+  cloud_firestore: ^4.13.3
   #curved_nav_bar: ^0.0.2
 dev_dependencies:
   flutter_test:
