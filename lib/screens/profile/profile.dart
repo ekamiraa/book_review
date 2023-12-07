@@ -29,7 +29,6 @@ class _ProfileState extends State<Profile> {
         ),
         Expanded(child: DetailProfile()),
       ]),
-      bottomNavigationBar: CustomBottomNavigationBar(),
     );
   }
 }

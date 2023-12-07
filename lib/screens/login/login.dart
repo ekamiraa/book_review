@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
-   LoginPage({super.key});
+  LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -39,7 +39,9 @@ class _LoginPageState extends State<LoginPage> {
           OutlinedButton(
             onPressed: (() {
               String username = _usernameController.text;
-              Navigator.pushNamed(context, '/home', arguments: username);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/bottomnavbar', (route) => false,
+                  arguments: username);
             }),
             style: OutlinedButton.styleFrom(
               backgroundColor: Color.fromARGB(255, 225, 99, 71),
@@ -49,7 +51,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             child: Container(
-              
               child: Text(
                 "Login",
                 style: TextStyle(
