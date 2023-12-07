@@ -57,9 +57,6 @@ class _DetailBooksState extends State<DetailBooks> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 10.0,
-            ),
 
             FutureBuilder<List<Reviews>>(
               future: futureReviews,
@@ -209,7 +206,7 @@ class BookChoose extends StatelessWidget {
                     direction: Axis.horizontal,
                     allowHalfRating: true,
                     itemCount: 5,
-                    itemSize: 12.0,
+                    itemSize: 18.0,
                     itemPadding: EdgeInsets.symmetric(horizontal: 3.0),
                     itemBuilder: (context, _) => Icon(
                       Icons.star,
@@ -228,6 +225,9 @@ class BookChoose extends StatelessWidget {
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
+                  ),
+                  SizedBox(
+                    height: 5.0,
                   ),
                   Text(
                     book.author,
@@ -277,32 +277,20 @@ class ReviewsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      // physics: NeverScrollableScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
       itemCount: reviews.length,
       itemBuilder: (context, index) => Container(
-        margin: EdgeInsets.fromLTRB(15, 5, 20, 15),
+        margin: EdgeInsets.fromLTRB(15, 0, 20, 15),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            // Container(
-            //   padding: EdgeInsets.all(8.0),
-            //   height: 70,
-            //   width: 55,
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(10),
-            //     image: DecorationImage(
-            //       image: AssetImage(listReview[index].profile),
-            //       fit: BoxFit.cover,
-            //     ),
-            //   ),
-            // ),
             Expanded(
               child: Container(
                 padding: EdgeInsets.only(
@@ -342,12 +330,15 @@ class ReviewsList extends StatelessWidget {
                         // ),
                       ],
                     ),
+                    SizedBox(
+                      height: 8.0,
+                    ),
                     Text(
                       "Summary:",
                       style: TextStyle(
                         fontSize: 16.0,
                         color: kFontLight,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                     Text(
@@ -359,12 +350,15 @@ class ReviewsList extends StatelessWidget {
                         color: kFontLight,
                       ),
                     ),
+                    SizedBox(
+                      height: 8.0,
+                    ),
                     Text(
                       "Article:",
                       style: TextStyle(
                         fontSize: 16.0,
                         color: kFontLight,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                     Text(

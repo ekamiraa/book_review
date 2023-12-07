@@ -29,7 +29,7 @@ class _ProfileState extends State<Profile> {
           },
         ),
         SizedBox(
-          height: 10.0,
+          height: 20.0,
         ),
         Expanded(child: DetailProfile()),
       ]),
@@ -52,7 +52,8 @@ class DetailProfile extends StatelessWidget {
           child: CircleAvatar(
             radius: 50,
             child: CircleAvatar(
-                radius: 50, foregroundImage: AssetImage("/profile_user.png")),
+                radius: 50,
+                foregroundImage: AssetImage("assets/profile_user.png")),
           ),
         ),
         Center(
@@ -131,30 +132,34 @@ class ButtonEditProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(left: 40, right: 40),
-      child: OutlinedButton(
-        onPressed: () {
-          // Navigate to the Edit Profile screen
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => EditProfileScreen()),
-          );
-        },
-        style: OutlinedButton.styleFrom(
-          backgroundColor: Color.fromARGB(255, 225, 99, 71),
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-        ),
-        child: Container(
-          child: Text(
-            "Edit Profile",
-            style: TextStyle(
-              fontSize: 20.0,
-              color: Colors.white,
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: SizedBox(
+        height: 55,
+        width: double.infinity,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: Color.fromARGB(255, 244, 156, 3), // background color
+            onPrimary: Colors.white, // text color
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
             ),
+            elevation: 3, // button shadow
+            textStyle: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => EditProfileScreen()),
+            );
+          },
+          child: const Text(
+            "Edit Profile",
+            style: TextStyle(color: Colors.white),
           ),
         ),
       ),

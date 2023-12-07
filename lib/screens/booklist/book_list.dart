@@ -110,7 +110,7 @@ class SearchInput extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            margin: EdgeInsets.all(20),
+            margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
             decoration: BoxDecoration(
               border: Border.all(
                 color: kFontLight.withOpacity(0.3),
@@ -183,7 +183,7 @@ class ItemBookList extends StatelessWidget {
             );
           },
           child: Container(
-            height: 140,
+            height: 150,
             margin: EdgeInsets.fromLTRB(20, 5, 20, 10),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -255,7 +255,7 @@ class ItemBookList extends StatelessWidget {
                           },
                         ),
                         SizedBox(
-                          height: 5.0,
+                          height: 8.0,
                         ),
                         Text(
                           book.title,
@@ -281,6 +281,8 @@ class ItemBookList extends StatelessWidget {
                           children: [
                             Text(
                               book.publisher,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: 14.0,
                                 color: kFontLight,
